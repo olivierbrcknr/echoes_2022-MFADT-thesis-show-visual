@@ -17,10 +17,10 @@ import {
 
 let colormode = 1
 
-let gui = new dat.GUI()
+// let gui = new dat.GUI()
 let canvas = document.querySelector('canvas.webgl');
-const stats = new Stats();
-document.body.appendChild(stats.dom);
+// const stats = new Stats();
+// document.body.appendChild(stats.dom);
 let scene = new THREE.Scene()
 if (colormode == 1) {
     scene.background = new THREE.Color(0xffffff);
@@ -313,7 +313,7 @@ window.addEventListener('resize', () => {
 });
 
 let cameraaspect = sizes.width / sizes.height;
-const height = 500;
+const height = 200;
 let camera = new THREE.OrthographicCamera(-height * cameraaspect, height * cameraaspect, height, -height, 1000, 2500);
 camera.position.z = -1500;
 scene.add(camera)
