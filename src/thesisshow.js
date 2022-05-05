@@ -1,7 +1,7 @@
 import './style.css'
 import * as THREE from 'three'
 import Stats from 'three/examples/jsm/libs/stats.module.js';
-import './perlin.js'
+// import './perlin.js'
 import {
     OrbitControls
 } from 'three/examples/jsm/controls/OrbitControls.js'
