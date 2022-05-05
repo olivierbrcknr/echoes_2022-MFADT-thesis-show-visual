@@ -116,9 +116,9 @@ const apple = () => {
         geometry[i].setAttribute('pIndexj', new THREE.BufferAttribute(pindexj, 1))
         geometry[i].setAttribute('pIndexlayer', new THREE.BufferAttribute(pindexlayer, 1))
 
-        console.log(pindexlayer);
-        console.log(pindexj);
-        console.log(pindex);
+        // console.log(pindexlayer);
+        // console.log(pindexj);
+        // console.log(pindex);
     }
 
     /* -------------------------------------------------------------------------- */
@@ -324,8 +324,9 @@ helper.position.y = -75;
 
 let controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true;
-// controls.enabled = false;
-controls.enabled = true;
+controls.enabled = false;
+// controls.enabled = true;
+// controls.target = new THREE.Vector3(0,0,0)
 
 let renderer = new THREE.WebGLRenderer({
     canvas: canvas
@@ -337,6 +338,9 @@ apple();
 
 let tick = () => {
     let elapsedTime = clock.getElapsedTime()
+
+    camera.position.x = mousep.x*1.2
+    camera.position.y = mousep.y*1.2
 
     // updata material
     material.uniforms.uTime.value = elapsedTime

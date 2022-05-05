@@ -123,7 +123,7 @@ void main() {
     vec3 colordark = mix(vec3(0.6627, 0.6863, 0.8549), vec3(0.1, 0.1, 0.1), newvd);
     float cdist = distance(vPosition.xyz, vec3(.1));
     float alphavalue = mix(1.0, .0, cdist * .0006);
-vec3 color = mix(colorbright,colordark,c);
+vec3 color = mix(colordark,colorbright,c);
     gl_FragColor = vec4(color, 1.);
 
 }
