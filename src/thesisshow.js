@@ -17,7 +17,7 @@ import {
 
 // 1 is bright mode
 // 0 is dark mode
-let colormode = 1
+let colormode = 0
 
 
 // let gui = new dat.GUI()
@@ -339,11 +339,25 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 apple();
 
+let easing = 0.12;
+let xxx = 0;
+let yyy = 0;
+
+
 let tick = () => {
     let elapsedTime = clock.getElapsedTime()
 
-    camera.position.x = mousep.x*1.2
-    camera.position.y = mousep.y*1.2
+    
+    let dx = mousep.x - xxx;
+    let dy = mousep.y - yyy;
+
+
+    xxx = Math.abs(dx) > 0.05 ? xxx + dx * easing : mousep.x;
+    yyy = Math.abs(dx) > 0.05 ? yyy + dy * easing : mousep.y;
+
+
+    camera.position.x = xxx*1.2
+    camera.position.y = yyy*1.2
 
     // updata material
     material.uniforms.uTime.value = elapsedTime
