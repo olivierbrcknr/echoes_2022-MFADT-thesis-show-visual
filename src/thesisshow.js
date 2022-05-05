@@ -15,7 +15,10 @@ import {
     Group
 } from 'three'
 
+// 1 is bright mode
+// 0 is dark mode
 let colormode = 1
+
 
 // let gui = new dat.GUI()
 let canvas = document.querySelector('canvas.webgl');
