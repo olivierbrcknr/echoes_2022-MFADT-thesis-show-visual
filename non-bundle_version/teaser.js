@@ -171,7 +171,16 @@ const initTeaser = () => {
     scene.add(group);
   };
 
-  document.addEventListener("mousemove", onMouseMove, false);
+  document.addEventListener(
+    "mousemove",
+    (e) => onMouseMove(e.clientX, e.clientY),
+    false
+  );
+  document.addEventListener(
+    "touchmove",
+    (e) => onMouseMove(e.layerX, e.layerY),
+    false
+  );
 
   /* -------------------------------------------------------------------------- */
   /*                             do not change here                             */
@@ -257,11 +266,11 @@ const initTeaser = () => {
 
   tick();
 
-  function onMouseMove(event) {
+  function onMouseMove(x, y) {
     // Update the mouse variable
     event.preventDefault();
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    mouse.x = (x / window.innerWidth) * 2 - 1;
+    mouse.y = -(y / window.innerHeight) * 2 + 1;
     // Make the sphere follow the mouse
     const vector = new THREE.Vector3(mouse.x, mouse.y, 0.5);
     vector.unproject(camera);
