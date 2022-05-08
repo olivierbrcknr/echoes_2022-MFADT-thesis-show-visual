@@ -10,6 +10,9 @@ const initTeaser = () => {
     colormode: false, // false is dark, true is light
     showHelper: false,
     shapeTransformFactor: 5,
+    speed: 0.25,
+    cameraDistance: -250,
+    mouseMoveFactor: 7,
   };
 
   const layer = 12;
@@ -25,8 +28,18 @@ const initTeaser = () => {
   gui.add(PARAMETERS, "colormode");
   gui.add(PARAMETERS, "showHelper").onChange(() => {
     helper.visible = PARAMETERS.showHelper;
+    centerCube.visible = PARAMETERS.showHelper;
   });
   gui.add(PARAMETERS, "shapeTransformFactor").min(0).max(20);
+  gui.add(PARAMETERS, "mouseMoveFactor").min(1).max(10);
+  gui.add(PARAMETERS, "speed").min(0).max(1);
+  gui
+    .add(PARAMETERS, "cameraDistance")
+    .min(-1000)
+    .max(-100)
+    .onChange(() => {
+      camera.position.z = PARAMETERS.cameraDistance;
+    });
 
   /* -------------------------------------------------------------------------- */
   /*                                 Variables                                  */
@@ -201,21 +214,30 @@ const initTeaser = () => {
 
   let cameraaspect = sizes.width / sizes.height;
   const height = 200;
-  const camera = new THREE.OrthographicCamera(
-    -height * cameraaspect,
-    height * cameraaspect,
-    height,
-    -height,
-    1000,
-    2500
-  );
-  camera.position.z = -1500;
+  // const camera = new THREE.OrthographicCamera(
+  //   -height * cameraaspect,
+  //   height * cameraaspect,
+  //   height,
+  //   -height,
+  //   1000,
+  //   2500
+  // );
+  const camera = new THREE.PerspectiveCamera(45, cameraaspect, 200, 2000);
+
+  camera.position.z = PARAMETERS.cameraDistance;
   scene.add(camera);
 
   const helper = new THREE.GridHelper(1000, 40, 0x303030, 0x303030);
   helper.position.y = 0;
   helper.visible = PARAMETERS.showHelper;
   scene.add(helper);
+
+  // debug cube
+  const bG = new THREE.BoxGeometry(1, 1, 1);
+  const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+  const centerCube = new THREE.Mesh(bG, material);
+  scene.add(centerCube);
+  centerCube.visible = PARAMETERS.showHelper;
 
   const controls = new THREE.OrbitControls(camera, canvas);
   controls.enableDamping = true;
@@ -253,7 +275,8 @@ const initTeaser = () => {
     group.children.forEach((g) => {
       const mat = g.children[0].material;
       mat.uniforms.uTime.value =
-        elapsedTime + PARAMETERS.shapeTransformFactor * mouse.x;
+        elapsedTime * PARAMETERS.speed +
+        PARAMETERS.shapeTransformFactor * mouse.x;
       mat.uniforms.uMx.value = mousep;
       mat.uniforms.c.value = PARAMETERS.colormode;
     });
@@ -269,8 +292,8 @@ const initTeaser = () => {
   function onMouseMove(x, y) {
     // Update the mouse variable
     event.preventDefault();
-    mouse.x = (x / window.innerWidth) * 2 - 1;
-    mouse.y = -(y / window.innerHeight) * 2 + 1;
+    mouse.x = ((x / window.innerWidth) * 2 - 1) / PARAMETERS.mouseMoveFactor;
+    mouse.y = (-(y / window.innerHeight) * 2 + 1) / PARAMETERS.mouseMoveFactor;
     // Make the sphere follow the mouse
     const vector = new THREE.Vector3(mouse.x, mouse.y, 0.5);
     vector.unproject(camera);
